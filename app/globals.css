@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0d1110;
+  --color-coal: #151a18;
+  --color-coal-2: #1c2321;
+  --color-line: #2a3330;
+  --color-felt: #0f4a33;
+  --color-felt-dark: #0a3324;
+  --color-gold: #d8b56a;
+  --color-gold-soft: #e9d3a0;
+  --color-ivory: #f8f4ea;
+  --color-mist: #9aa8a2;
+  --color-ruby: #c2353b;
+  --font-display: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+  --card-w: clamp(58px, 15vw, 92px);
+}
+@media (min-width: 768px) {
+  :root { --card-w: clamp(72px, 7.2vw, 100px); }
+}
+
+html, body { background: var(--color-ink); color: var(--color-ivory); font-family: var(--font-sans); }
+body { min-height: 100dvh; -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+button:disabled { cursor: default; }
+
+/* felt surface: one soft light pool, no busy gradients */
+.felt {
+  background-color: var(--color-felt);
+  background-image:
+    radial-gradient(ellipse at 50% 40%, rgba(255,255,255,0.07), transparent 65%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .18 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  box-shadow: inset 0 0 0 1px rgba(216,181,106,.18), inset 0 0 80px rgba(0,0,0,.45);
+}
+
+.card { width: var(--card-w); height: calc(var(--card-w) * 1.4); border-radius: calc(var(--card-w) * 0.09); }
+
+@keyframes deal-from { from { opacity: 0; transform: translate(var(--fx), var(--fy)) rotate(-20deg) scale(.7); } 30% { opacity: 1; } }
+@keyframes fly { from { transform: translate(var(--fx), var(--fy)); opacity: 1; } 85% { opacity: 1; } to { transform: translate(0, 0); opacity: 0; } }
+@keyframes chip-in { from { opacity: 0; transform: scale(.6); } }
+@keyframes flip { from { transform: perspective(400px) rotateY(90deg); opacity: .4; } }
+@keyframes pop { 0% { transform: scale(.7); opacity: 0; } 60% { opacity: 1; } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(8px); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes float { 0%,100% { transform: translateY(0) rotate(var(--r,0deg)); } 50% { transform: translateY(-6px) rotate(var(--r,0deg)); } }
+
+.anim-deal-from { animation: deal-from .45s cubic-bezier(.2,.8,.2,1) both; }
+.anim-fly { animation: fly .8s cubic-bezier(.4,.1,.2,1) both; }
+.anim-chip-in { animation: chip-in .3s ease-out both; }
+.anim-flip { animation: flip .45s cubic-bezier(.2,.8,.2,1) both; backface-visibility: hidden; }
+.anim-pop { animation: pop .35s ease-out both; }
+.anim-fade-up { animation: fade-up .3s ease-out both; }
+.turn-ring { position: absolute; inset: -4px; border-radius: 9999px; background: conic-gradient(var(--color-gold) 0 30%, transparent 30% 100%); animation: spin 1.4s linear infinite; -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px)); mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 3px)); }
+.float { animation: float 5s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
